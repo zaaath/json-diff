@@ -310,30 +310,6 @@ describe 'diff({keysOnly: true})', ->
     it "should return [..., ['~', <diff>], ...] for two arrays when an item has been modified", ->
       assert.deepEqual undefined, diff([{ foo: 10, bar: { bbbar: 10, bbboz: 11 } }, { foo: 20, bar: { bbbar: 50, bbboz: 25 } }, { foo: 30, bar: { bbbar: 92, bbboz: 34 } }], [{ foo: 10, bar: { bbbar: 10, bbboz: 11 } }, { foo: 21, bar: { bbbar: 50, bbboz: 25 } }, { foo: 30, bar: { bbbar: 92, bbboz: 34 } }], {keysOnly: true})
 
-describe 'diffString', ->
-
-  readExampleFile = (file) -> fs.readFileSync(Path.join(__dirname, '../example', file), 'utf8')
-  a = JSON.parse(readExampleFile('a.json'))
-  b = JSON.parse(readExampleFile('b.json'))
-  big_a = JSON.parse(readExampleFile('big_a.json'))
-  big_b = JSON.parse(readExampleFile('big_b.json'))
-  # Get duplicate copies for the precision test - numbers within these are altered (rounded) by the precision operation
-  aprec = JSON.parse(readExampleFile('a.json'))
-  bprec = JSON.parse(readExampleFile('b.json'))
-
-  it "should produce the expected result for the example JSON files", ->
-    assert.equal diffString(a, b, {color: false, full: true}), readExampleFile('full-result.jsdiff')
-    assert.equal diffString(big_a, big_b, {color: false, maxElisions: 5}), readExampleFile('big_result.jsdiff')
-
-  it "should produce the expected result for the example JSON files with precision set to 1", ->
-    assert.equal diffString(a, b, {color: false, full: true, precision: 1}), readExampleFile('full-result-precision-1.jsdiff')
-
-  it "should produce the expected colored result for the example JSON files", ->
-    assert.equal diffString(aprec, bprec, {color: true, full: true}), readExampleFile('full-result-colored.jsdiff')
-
-  it "return an empty string when no diff found", ->
-    assert.equal diffString(a, a), ''
-
 describe 'diff({ outputNewOnly: true }', ->
 
   it "should return only new diffs (added)", ->
